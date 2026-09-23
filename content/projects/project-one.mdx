@@ -1,0 +1,53 @@
+## The problem
+
+Open with the situation before you got involved — who the users were, what
+they could not do, and why that mattered. One short paragraph is enough. A
+reader deciding whether to keep going needs the stakes, not the backstory.
+
+## What I built
+
+Describe the thing itself. Screenshots do a lot of work here — drop images
+into `public/images/projects/` and reference them with normal Markdown, which
+renders through `next/image` automatically:
+
+```md
+![A short description of what the screenshot shows](/images/projects/dashboard.png)
+```
+
+Then the interesting part: one or two decisions you made and why. This is
+what separates a case study from a README.
+
+- **A decision you made.** What the alternatives were, and what tipped it.
+- **A constraint you worked within.** A deadline, a browser, a team size.
+- **Something you got wrong first.** Reviewers trust this more than a clean
+  narrative where everything worked.
+
+## A problem worth showing
+
+If one problem took real effort, give it its own section and show the code.
+Keep the snippet short — the shape of the solution, not the whole file.
+
+```ts
+// Debounce an expensive search so typing stays responsive
+export function useDebounced<T>(value: T, delay = 300): T {
+  const [debounced, setDebounced] = useState(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+
+  return debounced;
+}
+```
+
+## Outcome
+
+Numbers if you have them — users, load time, conversion, bundle size. If you
+do not have numbers, say what shipped and who uses it. "Used daily by the
+twelve-person support team" is a real outcome.
+
+## What I'd do differently
+
+A short, honest paragraph. Every interviewer asks some version of this
+question, and having the answer written down means you never fumble it.

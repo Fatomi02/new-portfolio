@@ -1,0 +1,109 @@
+---
+title: "How this site is put together"
+date: "2026-09-23"
+summary: "A tour of the content model, the MDX pipeline and the design tokens — and a reference for every element the prose styles cover."
+tags: ["Next.js", "MDX", "Meta"]
+---
+
+This first post doubles as a style reference. Every element below is styled,
+so if you are adding a post and wondering whether tables or code blocks will
+look right, the answer is here. Delete this file once you have written
+something real.
+
+## Adding a post
+
+Create a file in `content/blog/`. The filename becomes the URL, so
+`content/blog/state-machines.mdx` publishes at `/blog/state-machines`.
+
+Every post starts with frontmatter:
+
+```md
+---
+title: "How this site is put together"
+date: "2026-09-23"
+summary: "One or two sentences, shown on the listing page and in search results."
+tags: ["Next.js", "MDX"]
+draft: true
+---
+```
+
+`title` and `date` are required — the build fails without them, which is
+deliberate: a post with no date cannot be sorted, and one with no title has
+nothing to link to.
+
+Setting `draft: true` keeps a post visible while you run `npm run dev` and
+drops it from the production build, so you can leave half-finished pieces in
+the repository without publishing them.
+
+## What the styles cover
+
+Regular paragraphs get a comfortable measure of about 68 characters, because
+lines much longer than that make it hard for the eye to find the start of the
+next one. **Bold text** and [links](/projects) are styled to stay legible
+without shouting.
+
+> Block quotes sit in the accent colour, one rule to the left. Useful for
+> quoting a spec, an error message, or someone who said the thing better.
+
+### Lists
+
+- Unordered lists use a muted marker
+- Items get a little breathing room between them
+- Nesting works as you would expect
+
+1. Ordered lists are numbered
+2. And share the same rhythm
+
+### Code
+
+Inline code like `useDebounced()` gets a subtle background. Fenced blocks are
+highlighted by Shiki at build time, with a light and a dark theme baked in —
+so switching theme never re-highlights and never flashes:
+
+```tsx {4-6}
+export function Reveal({ children, delay = 0 }: RevealProps) {
+  const prefersReducedMotion = useReducedMotion();
+
+  if (prefersReducedMotion) {
+    return <div>{children}</div>;
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+```
+
+Add line numbers in braces after the language — `{4-6}` above — to highlight
+the lines that matter.
+
+### Tables
+
+| File | What it holds |
+| --- | --- |
+| `content/profile.ts` | Name, bio, socials, site URL |
+| `content/education.ts` | Education and certifications |
+| `content/projects/_meta.ts` | Project cards and ordering |
+| `lib/content-types.ts` | The types all of the above are checked against |
+
+## Where the design lives
+
+Colour, type scale and spacing are all defined once, at the top of
+`app/globals.css`. The palette is declared as plain custom properties and
+mapped into Tailwind utilities by reference, which is why `bg-bg` and
+`text-fg` follow the theme switch without any extra work.
+
+Type sizes use `clamp()` rather than breakpoints, so headings scale smoothly
+between phone and desktop instead of jumping at fixed widths.
+
+---
+
+Replace this post whenever you are ready. The pipeline that renders it is the
+same one behind the project case studies, so anything that works here works
+there too.

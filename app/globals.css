@@ -1,26 +1,444 @@
 @import "tailwindcss";
 
+/* ──────────────────────────────────────────────────────────────
+   Design tokens
+
+   Palette values live on :root (and its dark-mode overrides) as
+   plain custom properties. The @theme inline block below maps them
+   into Tailwind utilities *by reference*, so `bg-bg`, `text-fg`
+   etc. follow the theme switch automatically.
+
+   Contrast (WCAG AA needs 4.5:1 for body text) — all verified:
+     light  fg/bg 16.5:1   muted/bg 5.2:1   accent/bg 7.1:1
+     dark   fg/bg 16.1:1   muted/bg 6.4:1   accent/bg 9.4:1
+   ────────────────────────────────────────────────────────────── */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --paper: #fcfbf8;
+  --surface: #f4f2ec;
+  --ink: #191817;
+  --muted: #6e6a62;
+  --line: #e5e1d8;
+  --accent: #9a3412;
+  --accent-soft: #f5e6dd;
+  --selection: #ebe6da;
+
+  /* Code blocks get their own background, lighter than --surface.
+     Shiki's themes are tuned against white, and on a warm off-white
+     the dimmer tokens (comments, punctuation) slip under 4.5:1. */
+  --code-bg: #f8f7f2;
+  /* Highlighted lines are *lifted* rather than tinted — a darker wash
+     would eat the contrast the token colours need. */
+  --code-highlight: #fffdf9;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
+/* System preference — skipped when the user has pinned light mode */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-theme="light"]) {
+    --paper: #101010;
+    --surface: #1a1917;
+    --ink: #edebe6;
+    --muted: #9a958c;
+    --line: #2a2825;
+    --accent: #e8a87c;
+    --accent-soft: #2a1d14;
+    --selection: #2f2b26;
+    --code-bg: #1a1917;
+    --code-highlight: #24211d;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Explicit choice from the theme toggle wins over the media query */
+:root[data-theme="dark"] {
+  --paper: #101010;
+  --surface: #1a1917;
+  --ink: #edebe6;
+  --muted: #9a958c;
+  --line: #2a2825;
+  --accent: #e8a87c;
+  --accent-soft: #2a1d14;
+  --selection: #2f2b26;
+  --code-bg: #1a1917;
+  --code-highlight: #24211d;
+}
+
+@theme inline {
+  --color-bg: var(--paper);
+  --color-surface: var(--surface);
+  --color-fg: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-instrument-serif), ui-serif, Georgia, serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  /* Fluid type scale. Each step interpolates between a comfortable
+     phone size and a generous desktop size, so there are no jumps at
+     breakpoints and no size is ever set in a media query. */
+  --text-display: clamp(2.75rem, 1.4rem + 5.8vw, 6rem);
+  --text-display--line-height: 0.95;
+  --text-display--letter-spacing: -0.03em;
+
+  --text-h1: clamp(2.25rem, 1.5rem + 3.2vw, 4rem);
+  --text-h1--line-height: 1.05;
+  --text-h1--letter-spacing: -0.025em;
+
+  --text-h2: clamp(1.75rem, 1.35rem + 1.7vw, 2.5rem);
+  --text-h2--line-height: 1.15;
+  --text-h2--letter-spacing: -0.02em;
+
+  --text-h3: clamp(1.1875rem, 1.1rem + 0.5vw, 1.4375rem);
+  --text-h3--line-height: 1.3;
+  --text-h3--letter-spacing: -0.01em;
+
+  --text-lead: clamp(1.125rem, 1.05rem + 0.35vw, 1.3125rem);
+  --text-lead--line-height: 1.6;
+
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.4;
+  --text-label--letter-spacing: 0.12em;
+
+  /* Vertical rhythm — one knob for every section's breathing room */
+  --spacing-section: clamp(4.5rem, 2.5rem + 8vw, 9rem);
+  --spacing-gutter: clamp(1.25rem, 0.5rem + 3vw, 2.5rem);
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Keep anchored headings clear of the sticky header */
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--selection);
+    color: var(--ink);
+  }
+
+  /* One visible, consistent focus ring everywhere. Never removed —
+     only swapped for :focus-visible so mouse users don't see it. */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Headings inherit balance so short titles don't leave orphans */
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Page gutter + max measure, shared by every section and page */
+  .container-page {
+    width: 100%;
+    max-width: 72rem;
+    margin-inline: auto;
+    padding-inline: var(--spacing-gutter);
+  }
+
+  /* Narrower measure for long-form reading (~68 characters) */
+  .container-prose {
+    width: 100%;
+    max-width: 42rem;
+    margin-inline: auto;
+    padding-inline: var(--spacing-gutter);
+  }
+
+  /* Small caps eyebrow used above section headings */
+  .eyebrow {
+    font-size: var(--text-label);
+    letter-spacing: var(--text-label--letter-spacing);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  /* Underline that draws in on hover, for text links in prose */
+  .link-underline {
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-size: 0% 1px;
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    transition: background-size 0.3s var(--ease-out-soft);
+  }
+
+  .link-underline:hover,
+  .link-underline:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  /* ────────────────────────────────────────────────────────────
+     Long-form body copy — blog posts and project case studies.
+     Hand-rolled rather than @tailwindcss/typography so the rhythm
+     matches the rest of the site exactly.
+     ──────────────────────────────────────────────────────────── */
+  .prose {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--ink);
+  }
+
+  .prose > * + * {
+    margin-top: 1.4em;
+  }
+
+  .prose h2,
+  .prose h3,
+  .prose h4 {
+    font-family: var(--font-instrument-serif), ui-serif, Georgia, serif;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+    margin-top: 2.2em;
+    margin-bottom: 0.6em;
+  }
+
+  .prose h2 {
+    font-size: 1.75rem;
+  }
+  .prose h3 {
+    font-size: 1.375rem;
+  }
+  .prose h4 {
+    font-size: 1.125rem;
+  }
+
+  /* rehype-autolink-headings wraps the heading text in an anchor.
+     Keep it invisible until hovered or focused. */
+  .prose .heading-anchor {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .prose .heading-anchor:hover {
+    color: var(--accent);
+  }
+
+  .prose a:not(.heading-anchor) {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    transition: color 0.2s var(--ease-out-soft);
+  }
+
+  .prose a:not(.heading-anchor):hover {
+    color: var(--accent);
+  }
+
+  .prose ul,
+  .prose ol {
+    padding-left: 1.3em;
+  }
+
+  .prose ul {
+    list-style: disc;
+  }
+  .prose ol {
+    list-style: decimal;
+  }
+
+  .prose li::marker {
+    color: var(--muted);
+  }
+
+  .prose li + li {
+    margin-top: 0.5em;
+  }
+
+  .prose blockquote {
+    border-left: 2px solid var(--accent);
+    padding-left: 1.25em;
+    font-style: italic;
+    color: var(--muted);
+  }
+
+  .prose hr {
+    border: 0;
+    border-top: 1px solid var(--line);
+    margin-block: 3em;
+  }
+
+  .prose strong {
+    font-weight: 600;
+  }
+
+  .prose :not(pre) > code {
+    font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+    font-size: 0.875em;
+    background-color: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 0.12em 0.36em;
+  }
+
+  .prose pre {
+    font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    background-color: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 0.6rem;
+    padding: 1.1rem 1.25rem;
+    overflow-x: auto;
+  }
+
+  .prose figure[data-rehype-pretty-code-figure] > figcaption {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  }
+
+  /* Scoped to pre: inline code must never become a block */
+  .prose pre [data-line] {
+    display: block;
+  }
+
+  /* Highlighted lines, via ```ts {2,4} in the MDX */
+  .prose pre [data-highlighted-line] {
+    background-color: var(--code-highlight);
+    box-shadow: inset 2px 0 0 var(--accent);
+    margin-inline: -1.25rem;
+    padding-inline: 1.25rem;
+  }
+
+  .prose table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+  }
+
+  .prose th,
+  .prose td {
+    border-bottom: 1px solid var(--line);
+    padding: 0.6em 0.8em;
+    text-align: left;
+  }
+
+  .prose th {
+    font-weight: 600;
+    color: var(--muted);
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Scroll reveal
+
+   Driven by <Reveal />, which only sets these attributes after mount.
+   An element with no data-reveal attribute — which is what the server
+   renders, and what reduced-motion visitors keep — is simply visible.
+   ────────────────────────────────────────────────────────────── */
+[data-reveal] {
+  transition:
+    opacity 0.55s var(--ease-out-soft),
+    transform 0.55s var(--ease-out-soft);
+}
+
+[data-reveal="pending"] {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+[data-reveal="in"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Theme toggle icons
+
+   Decided in CSS rather than JavaScript so the correct icon is right
+   on the first paint, with no hydration flicker. Same tri-state logic
+   as the palette: default, system-dark, explicit-dark.
+   ────────────────────────────────────────────────────────────── */
+.theme-icon-dark {
+  opacity: 0;
+  transition: opacity 0.2s var(--ease-out-soft);
+}
+
+.theme-icon-light {
+  opacity: 1;
+  transition: opacity 0.2s var(--ease-out-soft);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-icon-dark {
+    opacity: 1;
+  }
+  :root:not([data-theme="light"]) .theme-icon-light {
+    opacity: 0;
+  }
+}
+
+:root[data-theme="dark"] .theme-icon-dark {
+  opacity: 1;
+}
+
+:root[data-theme="dark"] .theme-icon-light {
+  opacity: 0;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Syntax highlighting
+
+   rehype-pretty-code is configured with two Shiki themes, so every
+   token span carries both --shiki-light and --shiki-dark. These rules
+   pick the right one for the active theme — no re-highlighting, no
+   flash, and the same tri-state logic as the palette above.
+   ────────────────────────────────────────────────────────────── */
+.prose pre span,
+.prose pre code {
+  color: var(--shiki-light);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .prose pre span,
+  :root:not([data-theme="light"]) .prose pre code {
+    color: var(--shiki-dark);
+  }
+}
+
+:root[data-theme="dark"] .prose pre span,
+:root[data-theme="dark"] .prose pre code {
+  color: var(--shiki-dark);
 }
