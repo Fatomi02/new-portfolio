@@ -39,13 +39,21 @@ export interface TimelineEntry {
   title: string;
   /** Employer, or the institution for education entries */
   organization: string;
-  /** Free text so you can write "2021" or "Mar 2021" as you prefer */
-  start: string;
+  /**
+   * Free text so you can write "2021" or "Mar 2021" as you prefer.
+   * Omit it for a single-date entry and only `end` is shown.
+   */
+  start?: string;
   /** Use "Present" for a current role */
   end: string;
   location?: string;
   /** Short achievement bullets. Keep to three or four. */
   points?: string[];
+}
+
+export interface Certification {
+  title: string;
+  issuer: string;
 }
 
 export interface ProjectLink {

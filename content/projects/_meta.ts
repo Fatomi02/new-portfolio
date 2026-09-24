@@ -1,58 +1,65 @@
 import type { ProjectMeta } from "@/lib/content-types";
 
 /**
- * PLACEHOLDER — replace with your real projects.
+ * Drawn from the TOP PROJECTS section of your CV, plus your final-year
+ * research project.
  *
- * To add a project:
- *   1. Add an entry here (order in this array = order on the site).
- *   2. Create content/projects/<slug>.mdx for the case study.
- *   3. Drop a cover image in public/images/projects/.
+ * Your old portfolio (portfolio-five-bice-11.vercel.app) is deliberately
+ * left out — this site replaces it, and linking to it from here invites a
+ * comparison you don't need.
  *
- * `slug` must match the MDX filename exactly — the build fails if it
- * does not, so a broken link can never reach production.
+ * Covers are null for now, so each card renders the typographic fallback.
+ * Add screenshots to public/images/projects/ and point `cover` at them.
  */
 export const projects: ProjectMeta[] = [
   {
-    slug: "project-one",
-    title: "Project One",
+    slug: "sysserve-website",
+    title: "Sysserve Solutions",
     summary:
-      "One sentence on what it does and who it is for. Lead with the outcome, not the stack.",
-    year: "2025",
-    role: "Frontend Developer",
-    stack: ["Next.js", "TypeScript", "Tailwind CSS"],
-    links: [
-      { label: "Live site", href: "https://example.com" },
-      { label: "Source", href: "https://github.com/yourusername/project-one" },
-    ],
-    cover: null,
-    featured: true,
-  },
-  {
-    slug: "project-two",
-    title: "Project Two",
-    summary:
-      "Another one-liner. If the project is visual, say what it looks like; if it is technical, say what was hard.",
-    year: "2025",
-    role: "Frontend Developer",
-    stack: ["React", "Vite", "CSS Modules"],
-    links: [{ label: "Live site", href: "https://example.com" }],
-    cover: null,
-    featured: true,
-  },
-  {
-    slug: "project-three",
-    title: "Project Three",
-    summary:
-      "Older or smaller work still earns a slot — it shows range and a habit of finishing things.",
+      "The public website for Sysserve, the facility and asset management company I worked at — built and maintained alongside their product work.",
     year: "2024",
-    role: "Developer",
-    stack: ["JavaScript", "Node.js"],
-    links: [
-      {
-        label: "Source",
-        href: "https://github.com/yourusername/project-three",
-      },
-    ],
+    role: "Software Engineer",
+    // TODO: confirm — this is inferred from the stack you used at Sysserve
+    stack: ["Angular", "TypeScript", "Tailwind CSS"],
+    links: [{ label: "Live site", href: "https://sysservesolutions.com" }],
+    cover: null,
+    featured: true,
+  },
+  {
+    slug: "acta-bioscientia",
+    title: "Acta Bioscientia",
+    summary:
+      "A publishing site for an academic journal — article browsing, issue archives and submission information for researchers.",
+    year: "2024",
+    role: "Frontend Developer",
+    // TODO: confirm the stack
+    stack: ["JavaScript", "HTML", "CSS"],
+    links: [{ label: "Live site", href: "https://actabioscientia.org" }],
+    cover: null,
+    featured: true,
+  },
+  {
+    slug: "traffic-offender-reporting",
+    title: "Traffic Offender Reporting",
+    summary:
+      "My final-year research project: a database of registered vehicle plate numbers that lets the public identify and report traffic offenders to the police and the FRSC.",
+    year: "2024",
+    role: "Undergraduate Researcher & Developer",
+    // TODO: confirm the stack you built this in
+    stack: ["JavaScript", "Node.js", "Firebase"],
+    links: [],
+    cover: null,
+    featured: true,
+  },
+  {
+    slug: "zeta",
+    title: "Zeta",
+    summary:
+      "TODO — one line on what Zeta does and who it's for. Lead with the outcome, not the stack.",
+    year: "2024",
+    role: "Frontend Developer",
+    stack: ["React", "TypeScript"],
+    links: [{ label: "Live site", href: "https://zeta-nine.vercel.app" }],
     cover: null,
     featured: false,
   },

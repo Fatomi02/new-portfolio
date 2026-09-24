@@ -18,10 +18,18 @@ export function Timeline({ entries }: TimelineProps) {
           <Reveal delay={index * 0.06}>
             <div className="grid gap-x-10 gap-y-2 py-8 sm:grid-cols-[9rem_1fr] sm:py-10">
               <p className="text-muted pt-1 font-mono text-xs tracking-wide tabular-nums">
-                {entry.start}
-                <span aria-hidden="true"> — </span>
-                <span className="sr-only">to</span>
-                {entry.end}
+                {/* A single-date entry (a certification, a graduation year)
+                    shows just the one date rather than "2024 — 2024". */}
+                {entry.start ? (
+                  <>
+                    {entry.start}
+                    <span aria-hidden="true"> — </span>
+                    <span className="sr-only">to</span>
+                    {entry.end}
+                  </>
+                ) : (
+                  entry.end
+                )}
               </p>
 
               <div>

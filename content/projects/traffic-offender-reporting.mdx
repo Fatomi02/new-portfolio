@@ -1,0 +1,70 @@
+## The problem
+
+Traffic enforcement in Nigeria depends heavily on an officer being present at
+the moment an offence happens. Most dangerous driving is seen by other road
+users and then forgotten, because there is nowhere useful to report it. The
+plate number is right there on the back of the vehicle — the missing piece is
+anything connecting that number to a record an enforcement body can act on.
+
+This was my final-year research project at LAUTECH: build a database of
+registered vehicle plate numbers and a reporting system on top of it, so a
+member of the public can identify a vehicle and file a report that actually
+reaches the Nigeria Police Force and the Federal Road Safety Corps.
+
+## What I built
+
+A web application with two halves.
+
+The first is the lookup: a searchable database of registered plate numbers
+that resolves a plate to its vehicle record.
+
+The second is the reporting flow. A member of the public submits an offence
+against a plate number, and the report is routed to the police and the FRSC
+rather than landing in an inbox nobody reads.
+
+{/* TODO: fill in the specifics — these are the bits only you know:
+
+     - What stack did you build it in? (I've guessed JavaScript, Node.js and
+       Firebase in _meta.ts — correct it if that's wrong.)
+     - Where did the plate data come from? Real registration data, a sample
+       set, or synthetic data you generated for the research?
+     - What does a report actually contain — offence type, time, location,
+       a photo?
+     - How does a report reach the police and the FRSC? An email, an API, a
+       dashboard they log into? */}
+
+## The design problem: reporting is easy to abuse
+
+A system that lets anyone file a report against any plate number is a system
+that can be used to harass people. This was the part of the project that
+needed the most thought, and it is the part worth talking about in an
+interview.
+
+{/* TODO: write what you actually did here. Even partial answers are
+     valuable — a research project is allowed to identify a problem it did
+     not fully solve, as long as you say so. Things worth covering:
+
+     - Do reporters have to identify themselves, and what stops a fake
+       account?
+     - Is there anything stopping the same plate being reported repeatedly?
+     - What evidence does a report need before it is taken seriously?
+     - Who can see a report once filed — and can the vehicle owner?
+     - How did you handle the privacy of the registration data itself? */}
+
+## Research findings
+
+{/* TODO: your CV mentions you analysed existing traffic management
+     solutions. What did you find? Which systems did you look at, what did
+     they get right, and what gap were you filling? This is what makes it a
+     research project rather than an app, so it is worth a paragraph. */}
+
+## Outcome
+
+{/* TODO: what was the result? Grade or assessment outcome, whether it was
+     demonstrated to anyone at the FRSC or the police, whether any part of it
+     is still running. If it was purely academic, say so plainly — a working
+     prototype and a clear write-up is a real outcome. */}
+
+## What I'd do differently
+
+{/* TODO: one honest paragraph. */}

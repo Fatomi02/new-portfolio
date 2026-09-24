@@ -1,59 +1,48 @@
 import type { Profile } from "@/lib/content-types";
 
-/**
- * ────────────────────────────────────────────────────────────────
- *  PLACEHOLDER CONTENT — replace everything marked TODO.
- *  This is the only file you need to touch to change your name,
- *  bio, contact details and social links across the whole site.
- * ────────────────────────────────────────────────────────────────
- */
 export const profile: Profile = {
-  // TODO: your full name
-  name: "Your Name",
+  name: "Fatomi Abdul-Rahmon Olaitan",
 
-  // TODO: the role you want to be hired for
-  role: "Frontend Developer",
+  role: "Frontend Engineer",
 
-  // TODO: one or two sentences. What you build, and what you care about.
   tagline:
-    "I build fast, accessible interfaces for the web — with a bias toward clean type, considered motion and code that stays readable.",
+    "I build and maintain production interfaces in React, Angular and Vue — component libraries, API integrations, and the performance and accessibility work that keeps them usable.",
 
-  // TODO: your About section. Each string is its own paragraph.
   bio: [
-    "Write two or three short paragraphs here. Lead with what you do now and the kind of work you want more of — that is the sentence a recruiter actually reads.",
-    "Use the second paragraph for how you work: the problems you like, the tools you reach for, what you have shipped and what you learned doing it.",
-    "Keep the third short and human. What you are learning, building or reading at the moment is enough.",
+    "I'm a frontend engineer based in Ibadan, Nigeria. I currently work at Phane, building interactive interfaces with React and Redux, integrating APIs and keeping the frontend fast, responsive and accessible.",
+    "Before Phane I was at Sysserve, where I built and maintained web and mobile applications in Angular, Ionic and Stencil. The work I'm most pleased with there was a reusable component library built on Angular Material — it cut the time it took to ship new features, because the next person no longer had to rebuild the same pieces.",
+    "I started out in technical support at Sycamore, troubleshooting issues for real users before I was writing the code they used. That's shaped how I build: I'd rather catch a confusing state in review than explain it in a support thread. I hold a B.Tech in Computer Engineering from LAUTECH, and I've volunteered as a JavaScript tutor teaching core concepts to students.",
   ],
 
-  // TODO
-  location: "Lagos, Nigeria",
+  location: "Ibadan, Nigeria",
 
-  // TODO: the address you want in your inbox
-  email: "you@example.com",
+  // The address on your CV. Change it here if you'd rather use another one —
+  // the contact form, the footer link and the JSON-LD all read from this.
+  email: "fatomiabdulrahmon@gmail.com",
 
-  // TODO: delete any you do not use
   socials: [
-    { label: "GitHub", href: "https://github.com/yourusername" },
-    { label: "LinkedIn", href: "https://linkedin.com/in/yourusername" },
-    { label: "X", href: "https://x.com/yourusername" },
+    { label: "GitHub", href: "https://github.com/fatomi02" },
+    { label: "LinkedIn", href: "https://linkedin.com/in/fatomi-abdulrahmon/" },
   ],
 
-  // TODO: drop your CV at public/resume.pdf, or set this to null to hide the link
-  resumeUrl: null,
+  resumeUrl: "/resume.pdf",
 
-  // TODO: the tools you actually want to be asked about in an interview
   skills: [
     "TypeScript",
+    "JavaScript",
     "React",
     "Next.js",
+    "Angular",
+    "Vue.js",
+    "Ionic",
+    "Stencil.js",
     "Tailwind CSS",
-    "Accessibility",
-    "Testing Library",
     "Node.js",
+    "Firebase",
     "Git",
   ],
 
-  // TODO: set this to your real domain before deploying — canonical URLs,
-  // Open Graph tags, the sitemap and RSS feed all read from it.
+  // TODO: set this to your real domain once you've deployed. Canonical
+  // URLs, Open Graph tags, sitemap.xml and rss.xml all read from it.
   siteUrl: "https://example.com",
 };

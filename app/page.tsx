@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { About } from "@/components/about";
+import { Certifications } from "@/components/certifications";
 import { ContactSection } from "@/components/contact-section";
 import { Hero } from "@/components/hero";
 import { JsonLd } from "@/components/json-ld";
 import { ProjectGrid } from "@/components/project-grid";
 import { Section } from "@/components/section";
 import { Timeline } from "@/components/timeline";
-import { education } from "@/content/education";
+import { certifications, education } from "@/content/education";
 import { experience } from "@/content/experience";
 import { featuredProjects, projects } from "@/content/projects/_meta";
 
@@ -51,6 +52,7 @@ export default function HomePage() {
 
       <Section id="education" eyebrow="Education" title="How I got here">
         <Timeline entries={education} />
+        <Certifications items={certifications} />
       </Section>
 
       <ContactSection />

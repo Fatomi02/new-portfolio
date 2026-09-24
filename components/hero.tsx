@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Link from "next/link";
 import { profile } from "@/content/profile";
 
@@ -12,8 +13,18 @@ export function Hero() {
         {profile.location}
       </p>
 
-      <h1 className="font-display text-display mt-5 max-w-[14ch]">
-        {profile.name}
+      {/*
+        Each word is kept whole so a line can only break at a space.
+        Without this a hyphenated name like "Abdul-Rahmon" breaks at its
+        hyphen and splits across two lines.
+      */}
+      <h1 className="font-display text-display mt-5 max-w-[22ch]">
+        {profile.name.split(" ").map((word, index) => (
+          <Fragment key={`${word}-${index}`}>
+            {index > 0 && " "}
+            <span className="whitespace-nowrap">{word}</span>
+          </Fragment>
+        ))}
       </h1>
 
       <p className="text-muted text-lead mt-7 max-w-[46ch]">
