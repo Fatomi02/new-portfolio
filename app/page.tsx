@@ -12,6 +12,23 @@ import { certifications, education } from "@/content/education";
 import { experience } from "@/content/experience";
 import { featuredProjects, projects } from "@/content/projects/_meta";
 
+function ArrowRight() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="arrow size-3.5"
+    >
+      <path d="M3 8h10M9 4l4 4-4 4" />
+    </svg>
+  );
+}
+
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
@@ -26,15 +43,17 @@ export default function HomePage() {
 
       <Section
         id="work"
+        index="01"
         eyebrow="Selected work"
         title="Things I've built"
         action={
           hasMoreProjects ? (
             <Link
               href="/projects"
-              className="link-underline text-muted hover:text-fg text-sm transition-colors"
+              className="arrow-link text-muted hover:text-fg text-sm"
             >
-              All projects →
+              All projects
+              <ArrowRight />
             </Link>
           ) : undefined
         }
@@ -42,15 +61,15 @@ export default function HomePage() {
         <ProjectGrid projects={featuredProjects} />
       </Section>
 
-      <Section id="about" eyebrow="About" title="A bit about me">
+      <Section id="about" index="02" eyebrow="About" title="A bit about me">
         <About />
       </Section>
 
-      <Section id="experience" eyebrow="Experience" title="Where I've worked">
+      <Section id="experience" index="03" eyebrow="Experience" title="Where I've worked">
         <Timeline entries={experience} />
       </Section>
 
-      <Section id="education" eyebrow="Education" title="How I got here">
+      <Section id="education" index="04" eyebrow="Education" title="How I got here">
         <Timeline entries={education} />
         <Certifications items={certifications} />
       </Section>

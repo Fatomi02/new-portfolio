@@ -20,7 +20,7 @@ export function About() {
       </Reveal>
 
       <Reveal delay={0.1}>
-        <aside className="space-y-8">
+        <aside className="surface space-y-8 rounded-2xl p-6">
           <div>
             <h3 className="eyebrow mb-3">Based in</h3>
             <p className="text-sm">{profile.location}</p>

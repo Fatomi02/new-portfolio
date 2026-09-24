@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MdxContent } from "@/components/mdx-content";
+import { ReadingProgress } from "@/components/reading-progress";
 import { formatDate, getAllPosts, getPost } from "@/lib/mdx";
 
 interface Params {
@@ -44,11 +45,25 @@ export default async function PostPage({ params }: Params) {
 
   return (
     <article className="container-prose pt-12 sm:pt-16">
+      <ReadingProgress />
+
       <Link
         href="/blog"
-        className="text-muted hover:text-fg text-sm transition-colors"
+        className="arrow-link arrow-link-back text-muted hover:text-fg text-sm"
       >
-        ← All posts
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 16 16"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="arrow size-3.5"
+        >
+          <path d="M13 8H3M7 4L3 8l4 4" />
+        </svg>
+        All posts
       </Link>
 
       <header className="border-line mt-8 border-b pb-8">

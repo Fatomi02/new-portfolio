@@ -11,7 +11,11 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
     <div className="grid gap-x-8 gap-y-14 sm:grid-cols-2">
       {projects.map((project, index) => (
         <Reveal key={project.slug} delay={(index % 2) * 0.08}>
-          <ProjectCard project={project} priority={index === 0} />
+          <ProjectCard
+            project={project}
+            index={index}
+            priority={index === 0}
+          />
         </Reveal>
       ))}
     </div>

@@ -5,7 +5,12 @@ import { profile } from "@/content/profile";
 
 export function ContactSection() {
   return (
-    <Section id="contact" eyebrow="Contact" title="Let's work together">
+    <Section
+      id="contact"
+      index="05"
+      eyebrow="Contact"
+      title="Let's work together"
+    >
       <div className="grid gap-x-16 gap-y-10 md:grid-cols-[1fr_1fr]">
         <Reveal>
           <p className="text-lead max-w-[38ch]">
@@ -22,7 +27,9 @@ export function ContactSection() {
         </Reveal>
 
         <Reveal delay={0.08}>
-          <ContactForm />
+          <div className="surface rounded-2xl p-6 sm:p-8">
+            <ContactForm />
+          </div>
         </Reveal>
       </div>
     </Section>

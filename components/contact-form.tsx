@@ -8,7 +8,7 @@ type Status = "idle" | "submitting" | "success" | "error";
 const fieldClass =
   // Placeholder is muted at full strength: faded further it drops under
   // 4.5:1, and placeholder text has to meet contrast like any other text.
-  "border-line bg-bg w-full rounded-lg border px-4 py-3 text-sm transition-colors placeholder:text-muted focus-visible:border-accent";
+  "border-line bg-bg w-full rounded-xl border px-4 py-3 text-sm transition-[border-color,box-shadow] duration-200 placeholder:text-muted hover:border-line-strong focus-visible:border-accent focus-visible:shadow-[var(--shadow-sm)]";
 
 /**
  * Validation lives entirely on the server.
@@ -152,9 +152,23 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="bg-fg text-bg rounded-full px-6 py-3 text-sm font-medium transition-opacity hover:opacity-85 disabled:opacity-50"
+          className="btn btn-primary disabled:pointer-events-none disabled:opacity-50"
         >
           {isSubmitting ? "Sending…" : "Send message"}
+          {!isSubmitting && (
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="arrow size-3.5"
+            >
+              <path d="M3 8h10M9 4l4 4-4 4" />
+            </svg>
+          )}
         </button>
 
         {/* Announced to screen readers when it fills in */}

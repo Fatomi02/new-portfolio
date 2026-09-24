@@ -30,6 +30,8 @@ export interface Profile {
   resumeUrl: string | null;
   /** Technologies listed in the About aside */
   skills: string[];
+  /** Shows the "Available for work" badge in the hero. Set false when you aren't. */
+  availableForWork: boolean;
   /** Absolute site URL, no trailing slash. Used for canonicals and OG tags. */
   siteUrl: string;
 }

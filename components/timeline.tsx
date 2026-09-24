@@ -43,7 +43,20 @@ export function Timeline({ entries }: TimelineProps) {
                 </p>
               )}
 
-              <div>
+              {/* A rail with a marker at each entry, so the eye can
+                  follow the list down rather than reading it as a stack
+                  of unrelated blocks. Hidden on narrow screens, where
+                  the single column makes it redundant. */}
+              <div className="relative sm:pl-8">
+                <span
+                  aria-hidden="true"
+                  className="bg-line absolute top-2 bottom-0 left-[3px] hidden w-px sm:block"
+                />
+                <span
+                  aria-hidden="true"
+                  className="bg-accent ring-bg absolute top-1.5 left-0 hidden size-[7px] rounded-full ring-4 sm:block"
+                />
+
                 <h3 className="text-h3 font-medium">{entry.title}</h3>
                 <p className="text-muted mt-1 text-sm">
                   {entry.organization}

@@ -21,7 +21,7 @@ export function Certifications({ items }: CertificationsProps) {
         {items.map((item) => (
           <li
             key={`${item.issuer}-${item.title}`}
-            className="border-line/70 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b pb-3"
+            className="border-line/70 hover:border-line-strong flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b pb-3 transition-colors"
           >
             <span className="text-sm">{item.title}</span>
             <span className="text-muted shrink-0 font-mono text-xs">

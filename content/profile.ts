@@ -27,6 +27,10 @@ export const profile: Profile = {
 
   resumeUrl: "/resume.pdf",
 
+  // Shows the badge at the top of the hero. Set to false when you stop
+  // looking — a stale "available" badge is worse than none.
+  availableForWork: true,
+
   skills: [
     "TypeScript",
     "JavaScript",

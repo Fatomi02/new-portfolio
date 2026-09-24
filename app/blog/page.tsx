@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PageHeader } from "@/components/page-header";
 import { Reveal } from "@/components/reveal";
 import { formatDate, getAllPosts } from "@/lib/mdx";
 
@@ -14,12 +15,7 @@ export default function BlogPage() {
 
   return (
     <div className="container-page pt-16 sm:pt-24">
-      <header className="mb-14 sm:mb-20">
-        <p className="eyebrow mb-3">Writing</p>
-        <h1 className="font-display text-h1 max-w-[16ch]">
-          Notes on building for the web
-        </h1>
-      </header>
+      <PageHeader eyebrow="Writing" title="Notes on building for the web" />
 
       {posts.length === 0 ? (
         <p className="text-muted">
@@ -28,19 +24,22 @@ export default function BlogPage() {
           publish the first one.
         </p>
       ) : (
-        <ol className="divide-line/70 divide-y border-t border-[var(--line)]">
+        <ol className="grid gap-4">
           {posts.map((post, index) => (
             <li key={post.slug}>
               <Reveal delay={Math.min(index, 4) * 0.05}>
                 <Link
                   href={`/blog/${post.slug}`}
-                  className="group grid gap-x-10 gap-y-2 py-8 sm:grid-cols-[9rem_1fr] sm:py-10"
+                  className="surface group grid gap-x-10 gap-y-3 rounded-2xl p-6 transition-[border-color,box-shadow,transform,opacity] duration-300 ease-[var(--ease-out-soft)] hover:-translate-y-0.5 hover:border-[var(--line-strong)] hover:shadow-[var(--shadow-md)] sm:grid-cols-[9rem_1fr] sm:p-8"
                 >
-                  <p className="text-muted pt-1 font-mono text-xs tracking-wide tabular-nums">
+                  <div className="text-muted font-mono text-xs tracking-wide tabular-nums sm:pt-1">
                     <time dateTime={post.frontmatter.date}>
                       {formatDate(post.frontmatter.date)}
                     </time>
-                  </p>
+                    {/* Full-strength muted, not faded: on the card's white
+                        surface a lighter tint drops under 4.5:1. */}
+                    <p className="text-muted mt-2">{post.readingTime}</p>
+                  </div>
 
                   <div>
                     <h2 className="text-h3 group-hover:text-accent font-medium transition-colors">
@@ -54,9 +53,19 @@ export default function BlogPage() {
                     <p className="text-muted mt-2 text-sm leading-relaxed">
                       {post.frontmatter.summary}
                     </p>
-                    <p className="text-muted/80 mt-3 font-mono text-xs">
-                      {post.readingTime}
-                    </p>
+
+                    {post.frontmatter.tags.length > 0 && (
+                      <ul className="mt-4 flex flex-wrap gap-2">
+                        {post.frontmatter.tags.map((tag) => (
+                          <li
+                            key={tag}
+                            className="border-line text-muted rounded-full border px-2.5 py-0.5 text-xs"
+                          >
+                            {tag}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 </Link>
               </Reveal>

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MdxContent } from "@/components/mdx-content";
+import { ReadingProgress } from "@/components/reading-progress";
 import { projects } from "@/content/projects/_meta";
 import { getProjectBody } from "@/lib/mdx";
 
@@ -54,18 +55,21 @@ export default async function ProjectPage({ params }: Params) {
 
   return (
     <article className="pt-12 sm:pt-16">
+      <ReadingProgress />
+
       <div className="container-prose">
         <Link
           href="/projects"
-          className="text-muted hover:text-fg text-sm transition-colors"
+          className="arrow-link arrow-link-back text-muted hover:text-fg text-sm"
         >
-          ← All projects
+          <BackArrow />
+          All projects
         </Link>
 
         <h1 className="font-display text-h1 mt-8">{project.title}</h1>
         <p className="text-muted text-lead mt-5">{project.summary}</p>
 
-        <dl className="border-line mt-10 grid grid-cols-2 gap-x-8 gap-y-6 border-t pt-8 sm:grid-cols-3">
+        <dl className="surface mt-10 grid grid-cols-2 gap-x-8 gap-y-6 rounded-2xl p-6 sm:grid-cols-3">
           <div>
             <dt className="eyebrow mb-2">Year</dt>
             <dd className="text-sm">{project.year}</dd>
@@ -88,9 +92,10 @@ export default async function ProjectPage({ params }: Params) {
                   href={href}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="border-line hover:border-fg inline-block rounded-full border px-5 py-2.5 text-sm transition-colors"
+                  className="btn btn-secondary"
                 >
-                  {label} ↗
+                  {label}
+                  <ExternalArrow />
                 </a>
               </li>
             ))}
@@ -100,7 +105,7 @@ export default async function ProjectPage({ params }: Params) {
 
       {project.cover && (
         <div className="container-page mt-14">
-          <div className="bg-surface border-line relative aspect-[16/9] overflow-hidden rounded-xl border">
+          <div className="surface relative aspect-[16/9] overflow-hidden rounded-2xl shadow-[var(--shadow-lg)]">
             <Image
               src={project.cover}
               alt={project.coverAlt ?? ""}
@@ -120,10 +125,13 @@ export default async function ProjectPage({ params }: Params) {
       {(previous || next) && (
         <nav
           aria-label="More projects"
-          className="container-prose border-line mt-20 grid gap-6 border-t pt-8 sm:grid-cols-2"
+          className="container-prose border-line mt-20 grid gap-4 border-t pt-10 sm:grid-cols-2"
         >
           {previous ? (
-            <Link href={`/projects/${previous.slug}`} className="group">
+            <Link
+              href={`/projects/${previous.slug}`}
+              className="surface group rounded-xl p-5 transition-[border-color,box-shadow,transform,opacity] duration-300 hover:-translate-y-0.5 hover:border-[var(--line-strong)] hover:shadow-[var(--shadow-md)]"
+            >
               <span className="eyebrow">Previous</span>
               <span className="group-hover:text-accent mt-2 block text-sm font-medium transition-colors">
                 {previous.title}
@@ -136,7 +144,7 @@ export default async function ProjectPage({ params }: Params) {
           {next && (
             <Link
               href={`/projects/${next.slug}`}
-              className="group sm:text-right"
+              className="surface group rounded-xl p-5 transition-[border-color,box-shadow,transform,opacity] duration-300 hover:-translate-y-0.5 hover:border-[var(--line-strong)] hover:shadow-[var(--shadow-md)] sm:text-right"
             >
               <span className="eyebrow">Next</span>
               <span className="group-hover:text-accent mt-2 block text-sm font-medium transition-colors">
@@ -147,5 +155,39 @@ export default async function ProjectPage({ params }: Params) {
         </nav>
       )}
     </article>
+  );
+}
+
+function BackArrow() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="arrow size-3.5"
+    >
+      <path d="M13 8H3M7 4L3 8l4 4" />
+    </svg>
+  );
+}
+
+function ExternalArrow() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="arrow size-3"
+    >
+      <path d="M5 11L11 5M6 5h5v5" />
+    </svg>
   );
 }

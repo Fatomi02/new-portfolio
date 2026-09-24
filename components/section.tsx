@@ -5,6 +5,8 @@ interface SectionProps {
   id?: string;
   /** Small caps label above the heading */
   eyebrow?: string;
+  /** Two-digit index shown beside the eyebrow, e.g. "01" */
+  index?: string;
   /** Section heading. Omit for sections that supply their own. */
   title?: string;
   /** Optional link rendered opposite the heading, e.g. "All projects →" */
@@ -21,6 +23,7 @@ interface SectionProps {
 export function Section({
   id,
   eyebrow,
+  index,
   title,
   action,
   children,
@@ -34,9 +37,23 @@ export function Section({
       style={{ scrollMarginTop: "5rem" }}
     >
       {(eyebrow || title) && (
-        <div className="mb-10 flex flex-wrap items-end justify-between gap-4 sm:mb-14">
-          <div>
-            {eyebrow && <p className="eyebrow mb-3">{eyebrow}</p>}
+        <div className="mb-10 sm:mb-14">
+          {/* Index, label and a rule running out to the edge of the
+              measure — the detail that makes a section feel placed
+              rather than just stacked. */}
+          {eyebrow && (
+            <div className="mb-4 flex items-center gap-4">
+              {index && (
+                <span aria-hidden="true" className="section-index">
+                  {index}
+                </span>
+              )}
+              <span className="eyebrow">{eyebrow}</span>
+              <span aria-hidden="true" className="rule" />
+            </div>
+          )}
+
+          <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
             {title && (
               <h2
                 id={id ? `${id}-heading` : undefined}
@@ -45,8 +62,8 @@ export function Section({
                 {title}
               </h2>
             )}
+            {action}
           </div>
-          {action}
         </div>
       )}
       {children}
