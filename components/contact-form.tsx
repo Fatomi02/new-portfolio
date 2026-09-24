@@ -98,3 +98,4 @@ export function ContactForm() {
       </div>
     );
   }
+}
