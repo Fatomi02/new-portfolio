@@ -97,5 +97,70 @@ export async function POST(request: Request) {
     return NextResponse.json(
       { ok: false, error: "Too many messages. Please try again later." },
       { status: 429 },
-    );}
+    );
   }
+
+  const apiKey = process.env.RESEND_API_KEY;
+  const to = process.env.CONTACT_TO_EMAIL ?? profile.email;
+
+  if (!apiKey) {
+    // In development the message goes to the terminal, so the form can be
+    // exercised with no secrets configured.
+    if (process.env.NODE_ENV === "development") {
+      console.info(
+        `[contact] RESEND_API_KEY is not set, so no email was sent.\n` +
+          `  from: ${name} <${email}>\n  to: ${to}\n  message: ${message}`,
+      );
+      return NextResponse.json({ ok: true });
+    }
+
+    // In production it must not claim success. Telling a visitor their
+    // message was sent when it was silently dropped is worse than an
+    // outage: they have no reason to follow up, and neither side finds
+    // out. Fail loudly and give them the address instead.
+    console.error(
+      "[contact] RESEND_API_KEY is not set in production — message dropped. " +
+        "Set it in the hosting provider's environment variables and redeploy.",
+    );
+    return NextResponse.json(
+      {
+        ok: false,
+        error: `Email isn't configured yet, so this wasn't delivered. Please write to ${to} directly.`,
+      },
+      { status: 503 },
+    );
+  }
+
+  try {
+    const resend = new Resend(apiKey);
+    const { error } = await resend.emails.send({
+      // Must be a domain you have verified with Resend. Their shared
+      // onboarding sender works for testing before you verify your own.
+      from: process.env.CONTACT_FROM_EMAIL ?? "Portfolio <onboarding@resend.dev>",
+      to,
+      replyTo: email,
+      subject: `Portfolio enquiry from ${name}`,
+      text: `From: ${name} <${email}>\n\n${message}`,
+      html:
+        `<p><strong>From:</strong> ${escapeHtml(name)} ` +
+        `&lt;${escapeHtml(email)}&gt;</p>` +
+        `<p style="white-space:pre-wrap">${escapeHtml(message)}</p>`,
+    });
+
+    if (error) {
+      console.error("[contact] Resend rejected the message:", error);
+      return NextResponse.json(
+        { ok: false, error: "Could not send just now. Please email me directly." },
+        { status: 502 },
+      );
+    }
+  } catch (cause) {
+    console.error("[contact] Unexpected failure sending message:", cause);
+    return NextResponse.json(
+      { ok: false, error: "Could not send just now. Please email me directly." },
+      { status: 502 },
+    );
+  }
+
+  return NextResponse.json({ ok: true });
+}
