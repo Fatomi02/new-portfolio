@@ -136,7 +136,7 @@ export async function POST(request: Request) {
     const { error } = await resend.emails.send({
       // Must be a domain you have verified with Resend. Their shared
       // onboarding sender works for testing before you verify your own.
-      from: process.env.CONTACT_FROM_EMAIL ?? "Portfolio <onboarding@resend.dev>",
+      from: "Portfolio <onboarding@resend.dev>",
       to,
       replyTo: email,
       subject: `Portfolio enquiry from ${name}`,
