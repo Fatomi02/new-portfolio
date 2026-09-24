@@ -1,16 +1,17 @@
 import type { TimelineEntry } from "@/lib/content-types";
 
 /**
- * TODO — your CV doesn't give dates for any of these roles, so the years
- * below are placeholders. Replace every "20XX" with the real month or year
- * (e.g. start: "Mar 2024"). Recruiters look for these first.
+ * No dates, by choice. The Timeline drops the date column entirely when
+ * no entry carries one, so this reads as a clean list rather than a
+ * timeline with a gap where the years should be.
+ *
+ * Because there are no dates, the order of this array is the only signal
+ * of recency a reader gets — keep the most recent role first.
  */
 export const experience: TimelineEntry[] = [
   {
     title: "Software Engineer",
     organization: "Phane",
-    start: "20XX",
-    end: "Present",
     location: "United Kingdom · Remote",
     points: [
       "Build and maintain interactive user interfaces in React and Redux, and keep them working as the product changes.",
@@ -22,8 +23,6 @@ export const experience: TimelineEntry[] = [
   {
     title: "Software Engineer",
     organization: "Sysserve",
-    start: "20XX",
-    end: "20XX",
     location: "Lagos, Nigeria",
     points: [
       "Built a reusable component library on Angular Material, cutting the time needed to ship new features.",
@@ -35,8 +34,6 @@ export const experience: TimelineEntry[] = [
   {
     title: "Technical Support",
     organization: "Sycamore",
-    start: "20XX",
-    end: "20XX",
     location: "Lagos, Nigeria",
     points: [
       "Diagnosed and resolved software and system issues for users, escalating to engineering where needed.",

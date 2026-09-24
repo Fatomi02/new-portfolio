@@ -1,5 +1,6 @@
 import { profile } from "@/content/profile";
 import { getAllPosts } from "@/lib/mdx";
+import { siteUrl } from "@/lib/site-url";
 
 /** Content only changes at build time, so prerender it like the pages. */
 export const dynamic = "force-static";
@@ -15,15 +16,14 @@ function escapeXml(value: string): string {
 
 export function GET() {
   const posts = getAllPosts();
-  const site = profile.siteUrl.replace(/\/$/, "");
 
   const items = posts
     .map((post) =>
       [
         "    <item>",
         `      <title>${escapeXml(post.frontmatter.title)}</title>`,
-        `      <link>${site}/blog/${post.slug}</link>`,
-        `      <guid isPermaLink="true">${site}/blog/${post.slug}</guid>`,
+        `      <link>${siteUrl}/blog/${post.slug}</link>`,
+        `      <guid isPermaLink="true">${siteUrl}/blog/${post.slug}</guid>`,
         `      <description>${escapeXml(post.frontmatter.summary)}</description>`,
         `      <pubDate>${new Date(post.frontmatter.date).toUTCString()}</pubDate>`,
         "    </item>",
@@ -35,10 +35,10 @@ export function GET() {
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>${escapeXml(profile.name)} — Blog</title>
-    <link>${site}/blog</link>
+    <link>${siteUrl}/blog</link>
     <description>${escapeXml(profile.tagline)}</description>
     <language>en</language>
-    <atom:link href="${site}/rss.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="${siteUrl}/rss.xml" rel="self" type="application/rss+xml" />
 ${items}
   </channel>
 </rss>`;

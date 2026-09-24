@@ -1,4 +1,5 @@
 import { profile } from "@/content/profile";
+import { siteUrl } from "@/lib/site-url";
 
 /**
  * Structured data for the home page. Lets search engines show the name,
@@ -12,7 +13,7 @@ export function JsonLd() {
     jobTitle: profile.role,
     description: profile.tagline,
     email: `mailto:${profile.email}`,
-    url: profile.siteUrl,
+    url: siteUrl,
     sameAs: profile.socials.map((social) => social.href),
   };
 

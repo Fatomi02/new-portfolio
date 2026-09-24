@@ -42,7 +42,12 @@ export const profile: Profile = {
     "Git",
   ],
 
-  // TODO: set this to your real domain once you've deployed. Canonical
-  // URLs, Open Graph tags, sitemap.xml and rss.xml all read from it.
-  siteUrl: "https://example.com",
+  // Local development fallback only — you do not need to change this.
+  //
+  // On Vercel the real address is picked up automatically from the
+  // project's production domain, so canonical URLs, Open Graph tags, the
+  // sitemap and the RSS feed are all correct the moment you deploy. If you
+  // later put a custom domain in front, set NEXT_PUBLIC_SITE_URL to it.
+  // See lib/site-url.ts.
+  siteUrl: "http://localhost:3000",
 };

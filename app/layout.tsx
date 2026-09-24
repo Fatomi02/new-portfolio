@@ -4,6 +4,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { ThemeScript } from "@/components/theme-script";
 import { profile } from "@/content/profile";
+import { siteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 const inter = Inter({
@@ -30,18 +31,18 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(profile.siteUrl),
+  metadataBase: new URL(siteUrl),
   title: {
     default: `${profile.name} — ${profile.role}`,
     template: `%s — ${profile.name}`,
   },
   description: profile.tagline,
-  authors: [{ name: profile.name, url: profile.siteUrl }],
+  authors: [{ name: profile.name, url: siteUrl }],
   creator: profile.name,
   openGraph: {
     type: "website",
     locale: "en_GB",
-    url: profile.siteUrl,
+    url: siteUrl,
     siteName: profile.name,
     title: `${profile.name} — ${profile.role}`,
     description: profile.tagline,

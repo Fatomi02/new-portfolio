@@ -4,7 +4,7 @@ export const education: TimelineEntry[] = [
   {
     title: "B.Tech, Computer Engineering",
     organization: "Ladoke Akintola University of Technology",
-    // TODO: add the year you started, e.g. start: "2019"
+    start: "2019",
     end: "2024",
     location: "Oyo, Nigeria",
     points: [

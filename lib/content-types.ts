@@ -44,8 +44,12 @@ export interface TimelineEntry {
    * Omit it for a single-date entry and only `end` is shown.
    */
   start?: string;
-  /** Use "Present" for a current role */
-  end: string;
+  /**
+   * Use "Present" for a current role. Omit both this and `start` to show
+   * no dates at all — when every entry in a list does that, the date
+   * column is dropped rather than left as an empty rail.
+   */
+  end?: string;
   location?: string;
   /** Short achievement bullets. Keep to three or four. */
   points?: string[];

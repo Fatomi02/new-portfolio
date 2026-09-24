@@ -55,13 +55,15 @@ export const projects: ProjectMeta[] = [
     slug: "zeta",
     title: "Zeta",
     summary:
-      "TODO — one line on what Zeta does and who it's for. Lead with the outcome, not the stack.",
-    year: "2024",
+      "A fintech application built as the final project of the Sycamore internship training programme.",
+    year: "2023",
     role: "Frontend Developer",
-    stack: ["React", "TypeScript"],
+    // Inferred: your Vue certificate came from the same Sycamore training,
+    // so Zeta was most likely built in Vue. Correct this if it wasn't.
+    stack: ["Vue.js", "JavaScript", "Tailwind CSS"],
     links: [{ label: "Live site", href: "https://zeta-nine.vercel.app" }],
     cover: null,
-    featured: false,
+    featured: true,
   },
 ];
 

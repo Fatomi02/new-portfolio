@@ -161,11 +161,13 @@ runs Next.js. On Vercel:
 2. Import it at [vercel.com/new](https://vercel.com/new) — the defaults are
    correct, no configuration needed.
 3. Add `RESEND_API_KEY` (and any other variables) under
-   **Settings → Environment Variables**.
+   **Settings → Environment Variables**, then redeploy.
 
-**Before you deploy**, set `siteUrl` in `content/profile.ts` to your real
-domain. Canonical URLs, Open Graph tags, `sitemap.xml` and `rss.xml` are all
-generated from it, and they will point at `example.com` until you do.
+**You do not need to set a site URL.** Canonical tags, Open Graph tags,
+`sitemap.xml` and `rss.xml` read the project's production domain from
+Vercel automatically, so they are correct from the first deploy. If you
+later put a custom domain in front, set `NEXT_PUBLIC_SITE_URL` to it —
+`lib/site-url.ts` explains the order these are resolved in.
 
 ---
 
