@@ -77,11 +77,19 @@ export async function POST(request: Request) {
     );
   }
 
-  const { name, email, message, website } = parsed.data;
+  const { name, email, message, hp_check: honeypot } = parsed.data;
 
   // Honeypot tripped. Report success so the bot does not learn anything
-  // and does not retry with the field left blank.
-  if (website) {
+  // and does not retry with the field left blank — but log it, because
+  // if a browser or password manager ever starts autofilling this field
+  // real messages would vanish here and the sender would be told they
+  // went through.
+  if (honeypot) {
+    console.warn(
+      `[contact] Honeypot filled — discarded without sending. ` +
+        `If this was a real person, the hidden field is being autofilled. ` +
+        `from: ${name} <${email}>`,
+    );
     return NextResponse.json({ ok: true });
   }
 
@@ -89,53 +97,5 @@ export async function POST(request: Request) {
     return NextResponse.json(
       { ok: false, error: "Too many messages. Please try again later." },
       { status: 429 },
-    );
+    );}
   }
-
-  const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.CONTACT_TO_EMAIL ?? profile.email;
-
-  // No API key configured — the site still works, the message just goes
-  // to the server log instead of an inbox. Lets you run and demo the form
-  // locally without any secrets.
-  if (!apiKey) {
-    console.info(
-      `[contact] RESEND_API_KEY is not set, so no email was sent.\n` +
-        `  from: ${name} <${email}>\n  to: ${to}\n  message: ${message}`,
-    );
-    return NextResponse.json({ ok: true });
-  }
-
-  try {
-    const resend = new Resend(apiKey);
-    const { error } = await resend.emails.send({
-      // Must be a domain you have verified with Resend. Their shared
-      // onboarding sender works for testing before you verify your own.
-      from: process.env.CONTACT_FROM_EMAIL ?? "Portfolio <onboarding@resend.dev>",
-      to,
-      replyTo: email,
-      subject: `Portfolio enquiry from ${name}`,
-      text: `From: ${name} <${email}>\n\n${message}`,
-      html:
-        `<p><strong>From:</strong> ${escapeHtml(name)} ` +
-        `&lt;${escapeHtml(email)}&gt;</p>` +
-        `<p style="white-space:pre-wrap">${escapeHtml(message)}</p>`,
-    });
-
-    if (error) {
-      console.error("[contact] Resend rejected the message:", error);
-      return NextResponse.json(
-        { ok: false, error: "Could not send just now. Please email me directly." },
-        { status: 502 },
-      );
-    }
-  } catch (cause) {
-    console.error("[contact] Unexpected failure sending message:", cause);
-    return NextResponse.json(
-      { ok: false, error: "Could not send just now. Please email me directly." },
-      { status: 502 },
-    );
-  }
-
-  return NextResponse.json({ ok: true });
-}

@@ -28,8 +28,13 @@ export const contactSchema = z.object({
    * bot exactly what tripped it. The route handler checks the value
    * instead and answers with a plain success, so a bot learns nothing
    * and has no reason to retry with the field left blank.
+   *
+   * Named `hp_check` rather than something plausible like `website`:
+   * `website` maps to the `url` autocomplete token, so a browser or
+   * password manager can fill it for a real person — and their message
+   * would then be discarded while they were told it had been sent.
    */
-  website: z.string().optional(),
+  hp_check: z.string().optional(),
 });
 
 export type ContactInput = z.infer<typeof contactSchema>;
